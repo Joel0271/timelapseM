@@ -192,6 +192,24 @@ async function fetchData() {
       if (data.TIMESTAMP) {
         updateTime(data.TIMESTAMP);
       }
+      if (localBattery) {
+        const levelPercent = Math.round(localBattery.level * 100);
+        document.getElementById("batteryLevel").textContent =
+          levelPercent + "%";
+        document.getElementById("chargeStatus").textContent =
+          localBattery.charging ? "Charging" : "Not Charging";
+      } else if (typeof data.BATTERY === "number") {
+        // Fallback to Firebase battery
+        document.getElementById("batteryLevel").textContent =
+          data.BATTERY + "%";
+
+        document.getElementById("chargeStatus").textContent =
+          data.CHARGING === 1 ? "Charging" : "Not Charging";
+
+      } else {
+        document.getElementById("batteryLevel").textContent = "No Data";
+        document.getElementById("chargeStatus").textContent = "No Data";
+      }
     }
   } catch (err) {
     console.error("Fetch error:", err);
@@ -221,22 +239,14 @@ function updateTime(timestamp) {
 // ------------------------
 // BATTERY INFO
 // ------------------------
+
+let localBattery = null;
 if ('getBattery' in navigator) {
   navigator.getBattery().then(function(battery) {
-    function updateBattery() {
-      document.getElementById("batteryLevel").textContent =
-        Math.round(battery.level * 100) + "%";
-      document.getElementById("chargeStatus").textContent =
-        battery.charging ? "Charging" : "Not Charging";
-    }
-
-    updateBattery();
-    battery.addEventListener('levelchange', updateBattery);
-    battery.addEventListener('chargingchange', updateBattery);
-  });
-} else {
-  document.getElementById("batteryLevel").textContent = "Not supported";
-  document.getElementById("chargeStatus").textContent = "Not supported";
+    localBattery = battery;
+  }).catch(function() {
+    localBattery = null;
+  });  
 }
 
 // ------------------------
@@ -277,6 +287,7 @@ if ('serviceWorker' in navigator) {
 
 </body>
 </html>
+
 
 
 
