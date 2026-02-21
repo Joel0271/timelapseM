@@ -226,7 +226,12 @@ webpList.forEach(path => {
   };
   webpOptionsDiv.appendChild(img);
 });
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./service-miku.js');
+}
 </script>
 
 </body>
 </html>
+
