@@ -12,8 +12,8 @@ html, body {
   margin: 0;
   padding: 0;
   height: 100%;
-  overflow-x: hidden;   /* ❌ no horizontal scroll */
-  overflow-y: auto;     /* ✅ vertical scroll */
+  overflow-x: hidden;   /* no horizontal scroll */
+  overflow-y: auto;
   font-family: Arial, sans-serif;
   background: #f0f0f0;
 }
@@ -24,33 +24,34 @@ body {
 }
 
 .container {
-  width: 100vw;          /* Full device width */
-  max-width: 600px;      /* Optional limit for desktop */
+  width: 100%;
+  max-width: 500px;     /* keeps portrait feel on desktop */
+  display: flex;
+  flex-direction: column;   /* FORCE vertical stacking */
+  gap: 15px;
   padding: 10px;
   box-sizing: border-box;
 }
 
-/* Universal box styling */
+/* Universal box */
 .box {
   border: 3px solid black;
-  margin-bottom: 15px;
-  padding: 10px;
   background: #ddd;
-  position: relative;
+  padding: 10px;
   box-sizing: border-box;
 }
 
 /* WEBP1 */
 .webp1 {
   width: 100%;
-  height: 9vh;     /* 9% of screen height */
+  height: 9vh;
 }
 
 /* TIME + BATTERY ROW */
 .row {
   display: flex;
-  gap: 10px;
   width: 100%;
+  gap: 10px;
 }
 
 /* TIME */
@@ -59,7 +60,7 @@ body {
   height: 16vh;
 }
 
-/* Right column (battery + charge) */
+/* Battery column */
 .battery-column {
   width: 55%;
   display: flex;
@@ -67,66 +68,32 @@ body {
   gap: 10px;
 }
 
-/* Battery Level */
 .battery-box {
   height: 8vh;
 }
 
-/* Charge Status */
 .charge-box {
   height: 8vh;
 }
 
-/* WEBP2 (auto height scaling) */
+/* WEBP2 */
 .webp2 {
   width: 100%;
-  height: auto;   /* Let image decide */
 }
 
-/* PHUB DATA */
+.webp2 img {
+  width: 100%;
+  height: auto;   /* scale properly */
+  display: block;
+}
+
+/* PHUB */
 .phub-box {
   width: 100%;
   height: 30vh;
   overflow-y: auto;
 }
 
-/* Images */
-.webp-img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  cursor: pointer;
-}
-
-/* Selector panel */
-#selectorPanel {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: white;
-  display: none;
-  overflow-y: auto;
-  padding: 20px;
-  box-sizing: border-box;
-}
-
-.close-btn {
-  position: absolute;
-  right: 20px;
-  top: 20px;
-  font-size: 20px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.webp-option {
-  width: 100%;
-  margin-bottom: 10px;
-  cursor: pointer;
-  border: 2px solid black;
-}
 </style>
 </head>
 
@@ -282,5 +249,6 @@ if ('serviceWorker' in navigator) {
 
 </body>
 </html>
+
 
 
