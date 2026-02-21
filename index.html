@@ -37,14 +37,16 @@ html, body {
 
 /* WEBP1 */
 .webp1 {
-  width: 100%;
-  height: auto;
-  object-fit: hidden;
-  background-image: url('assets/IMGNYA.png');
-  background-size: 100% auto;
-  background-position: top center;
-  background-repeat: no-repeat;
+  width: 100%;        /* full width */
+  height: auto;       /* box height follows image */
   overflow: hidden;
+}
+
+.webp1 img {
+  width: 100%;        /* image fills container width */
+  height: auto;       /* image keeps aspect ratio */
+  display: block;     /* removes extra space below img */
+  object-fit: cover;  /* optional: ensures it fills container if you crop */
 }
 
 /* TIME + Battery Row */
@@ -345,6 +347,7 @@ if ('serviceWorker' in navigator) {
 
 </body>
 </html>
+
 
 
 
