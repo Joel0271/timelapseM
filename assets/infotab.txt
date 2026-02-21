@@ -1,0 +1,5 @@
+missing pics:
+default1.webp
+default2.webp
+anim1.webp
+anim2.webp

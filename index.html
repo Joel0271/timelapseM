@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>System Dashboard</title>
+
+<link rel="manifest" href="manifest.json">
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f0f0f0;
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  width: 390px;
+  padding: 10px;
+}
+
+.box {
+  border: 3px solid black;
+  margin-bottom: 15px;
+  padding: 10px;
+  background: #ddd;
+  position: relative;
+}
+
+.row {
+  display: flex;
+  gap: 10px;
+}
+
+.small {
+  flex: 1;
+  height: 100px;
+}
+
+.large {
+  height: 300px;
+}
+
+.webp-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  cursor: pointer;
+}
+
+#selectorPanel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: white;
+  display: none;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.close-btn {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  font-size: 20px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.webp-option {
+  width: 100%;
+  margin-bottom: 10px;
+  cursor: pointer;
+  border: 2px solid black;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- WEBP1 -->
+  <div class="box large">
+    <img id="webp1" class="webp-img" src="assets/default1.webp">
+  </div>
+
+  <!-- TIME + Battery -->
+  <div class="row">
+    <div class="box small">
+      <h3>TIME</h3>
+      <div id="timeDisplay">--:--:--</div>
+    </div>
+
+    <div style="flex:1; display:flex; flex-direction:column; gap:10px;">
+      <div class="box small">
+        <h3>Batt level</h3>
+        <div id="batteryLevel">Checking...</div>
+      </div>
+
+      <div class="box small">
+        <h3>Charge status</h3>
+        <div id="chargeStatus">Checking...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WEBP2 -->
+  <div class="box large">
+    <img id="webp2" class="webp-img" src="assets/default2.webp">
+  </div>
+
+  <!-- PHUB DATA -->
+  <div class="box large">
+    <h3>Phub datas</h3>
+    <pre id="phubData"></pre>
+  </div>
+
+</div>
+
+<!-- Selector Panel -->
+<div id="selectorPanel">
+  <div class="close-btn" onclick="closePanel()">X</div>
+  <h2>Select WebP</h2>
+  <div id="webpOptions"></div>
+</div>
+
+<script>
+const FIREBASE_URL = "https://mkmkmkgo-edd3e-default-rtdb.asia-southeast1.firebasedatabase.app/Phub.json";
+
+let currentWebp2 = "assets/default2.webp";
+
+// ------------------------
+// FETCH FIREBASE EVERY 1s
+// ------------------------
+async function fetchData() {
+  try {
+    const response = await fetch(FIREBASE_URL);
+    const data = await response.json();
+
+    if (data) {
+      document.getElementById("phubData").textContent =
+        JSON.stringify(data, null, 2);
+
+      if (data.TIMESTAMP) {
+        updateTime(data.TIMESTAMP);
+      }
+    }
+  } catch (err) {
+    console.error("Fetch error:", err);
+  }
+}
+
+setInterval(fetchData, 1000);
+fetchData();
+
+// ------------------------
+// TIME CONVERSION
+// ------------------------
+function updateTime(timestamp) {
+  const date = new Date(timestamp * 1000);
+  let hours = date.getHours();
+  const minutes = date.getMinutes().toString().padStart(2,'0');
+  const seconds = date.getSeconds().toString().padStart(2,'0');
+
+  const ampm = hours >= 12 ? "PM" : "AM";
+  hours = hours % 12;
+  hours = hours ? hours : 12;
+
+  document.getElementById("timeDisplay").textContent =
+    `${hours}:${minutes}:${seconds} ${ampm}`;
+}
+
+// ------------------------
+// BATTERY INFO
+// ------------------------
+if ('getBattery' in navigator) {
+  navigator.getBattery().then(function(battery) {
+    function updateBattery() {
+      document.getElementById("batteryLevel").textContent =
+        Math.round(battery.level * 100) + "%";
+      document.getElementById("chargeStatus").textContent =
+        battery.charging ? "Charging" : "Not Charging";
+    }
+
+    updateBattery();
+    battery.addEventListener('levelchange', updateBattery);
+    battery.addEventListener('chargingchange', updateBattery);
+  });
+} else {
+  document.getElementById("batteryLevel").textContent = "Not supported";
+  document.getElementById("chargeStatus").textContent = "Not supported";
+}
+
+// ------------------------
+// WEBP2 CLICK PANEL
+// ------------------------
+document.getElementById("webp2").addEventListener("click", () => {
+  document.getElementById("selectorPanel").style.display = "block";
+});
+
+function closePanel() {
+  document.getElementById("selectorPanel").style.display = "none";
+}
+
+// Example webp list
+const webpList = [
+  "assets/anim1.webp",
+  "assets/anim2.webp",
+  "assets/anim3.webp"
+];
+
+const webpOptionsDiv = document.getElementById("webpOptions");
+
+webpList.forEach(path => {
+  const img = document.createElement("img");
+  img.src = path;
+  img.className = "webp-option";
+  img.onclick = () => {
+    document.getElementById("webp2").src = path;
+    closePanel();
+  };
+  webpOptionsDiv.appendChild(img);
+});
+</script>
+
+</body>
+</html>
