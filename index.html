@@ -202,10 +202,8 @@ async function fetchData() {
         // Fallback to Firebase battery
         document.getElementById("batteryLevel").textContent =
           data.BATTERY + "%";
-
         document.getElementById("chargeStatus").textContent =
           data.CHARGING === 1 ? "Charging" : "Not Charging";
-
       } else {
         document.getElementById("batteryLevel").textContent = "No Data";
         document.getElementById("chargeStatus").textContent = "No Data";
@@ -262,9 +260,9 @@ function closePanel() {
 
 // Example webp list
 const webpList = [
-  "assets/anim1.webp",
-  "assets/anim2.webp",
-  "assets/anim3.webp"
+  "assets/mikuspam.webp",
+  //"assets/anim2.webp",
+  //"assets/anim3.webp"
 ];
 
 const webpOptionsDiv = document.getElementById("webpOptions");
@@ -287,6 +285,7 @@ if ('serviceWorker' in navigator) {
 
 </body>
 </html>
+
 
 
 
