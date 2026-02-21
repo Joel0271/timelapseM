@@ -29,7 +29,7 @@ html, body {
 /* Universal box */
 .box {
   /* border: 3px solid black; */
-  background: #ddd;
+  background: #ffffff;
   padding: 0px;
   box-sizing: border-box;
   margin-bottom: 0px;
@@ -113,35 +113,79 @@ html, body {
   50% { text-shadow: 0 0 10px #ff9ce6, 0 0 18px #ff9ce6; }
 }
 
-/* Battery column */
-.battery-column {
-  width: 55%;
-  background-image: url('assets/IMGNYA.png');
-  background-size: 100% auto;
-  background-position: top center;
-  background-repeat: no-repeat;
-  overflow: hidden;
+.miku-dashboard {
+  font-family: 'Roboto', 'Helvetica Neue', sans-serif;
+  width: 300px;
+  padding: 20px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Battery Column */
+.miku-dashboard .battery-column {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 /* Battery box */
-.battery-box {
-  height: 8vh;
-  margin-bottom: 0px;
-  background-image: url('assets/IMGNYA.png');
-  background-size: 100% auto;
-  background-position: top center;
-  background-repeat: no-repeat;
+.miku-dashboard .battery-box,
+.miku-dashboard .charge-box {
+  height: 60px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.2);
+  position: relative;
   overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+/* Battery gradient fill effect */
+.miku-dashboard .battery-box::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 0%; /* JS will control this */
+  background: linear-gradient(90deg, #00d4ff, #00ffa1);
+  z-index: 0;
+  border-radius: 12px 0 0 12px;
+  transition: width 0.5s ease-in-out;
+}
+
+.miku-dashboard .battery-box #batteryLevel {
+  z-index: 1;
+  color: #00d4ff;
+  font-size: 1.2rem;
 }
 
 /* Charge box */
-.charge-box {
-  height: 8vh;
-  background-image: url('assets/IMGNYA.png');
-  background-size: 100% auto;
-  background-position: top center;
-  background-repeat: no-repeat;
-  overflow: hidden;
+.miku-dashboard .charge-box {
+  font-size: 1rem;
+  color: #00aaff;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(0, 212, 255, 0.3);
+}
+
+/* Small Miku accent */
+.miku-dashboard .battery-box::after {
+  content: '';
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 10px;
+  height: 10px;
+  background: #00d4ff;
+  border-radius: 50%;
 }
 
 /* WEBP2 */
@@ -203,6 +247,7 @@ html, body {
       </div>
     </div>
 
+    <div class="miku-dashboard">
       <div class="battery-column">
         <div class="box battery-box">
           <div id="batteryLevel">--%</div>
@@ -211,6 +256,7 @@ html, body {
           <div id="chargeStatus">--</div>
         </div>
       </div>
+    </div>
     </div>
   </div>
 
@@ -347,6 +393,7 @@ if ('serviceWorker' in navigator) {
 
 </body>
 </html>
+
 
 
 
