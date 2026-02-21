@@ -66,7 +66,7 @@ html, body {
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  border-radius: 15px; /* soft rounded corners for Miku vibe */
+  /* border-radius: 15px; /* soft rounded corners for Miku vibe */
 }
 
 /* Time display */
@@ -77,32 +77,38 @@ html, body {
   text-shadow: 0 0 8px #1ac6e8, 0 0 15px #ff9ce6; /* neon glow with pink accent */
 }
 
-/* HH:MM:SS styling */
+/* HH:MM:SS styling (teal glow) */
 #hhmmss {
+  font-family: 'Orbitron', sans-serif;
   font-size: 3rem;
   font-weight: 500;
   display: block;
   letter-spacing: 0.1em;
-  transition: 0.3s color;
+  color: #1ac6e8; /* teal */
+  text-shadow: 0 0 8px #1ac6e8, 0 0 15px #1ac6e8;
+  animation: pulse-hhmmss 1s infinite;
 }
 
-/* AM/PM styling */
+/* AM/PM styling (pink glow) */
 #ampm {
   font-size: 1.5rem;
-  color: #ff9ce6; /* soft pink accent */
-  opacity: 0.7;
+  color: #ff9ce6;  /* soft pink */
+  opacity: 0.8;
   display: block;
   margin-top: 0.2em;
+  text-shadow: 0 0 6px #ff9ce6, 0 0 12px #ff9ce6;
+  animation: pulse-ampm 1s infinite;
 }
 
-@keyframes pulse {
-  0% { text-shadow: 0 0 8px #1ac6e8, 0 0 15px #ff9ce6; }
-  50% { text-shadow: 0 0 12px #1ac6e8, 0 0 20px #ff9ce6; }
-  100% { text-shadow: 0 0 8px #1ac6e8, 0 0 15px #ff9ce6; }
+/* Animations */
+@keyframes pulse-hhmmss {
+  0%, 100% { text-shadow: 0 0 8px #1ac6e8, 0 0 15px #1ac6e8; }
+  50% { text-shadow: 0 0 12px #1ac6e8, 0 0 20px #1ac6e8; }
 }
 
-#hhmmss {
-  animation: pulse 2s infinite;
+@keyframes pulse-ampm {
+  0%, 100% { text-shadow: 0 0 6px #ff9ce6, 0 0 12px #ff9ce6; }
+  50% { text-shadow: 0 0 10px #ff9ce6, 0 0 18px #ff9ce6; }
 }
 
 /* Battery column */
@@ -339,6 +345,7 @@ if ('serviceWorker' in navigator) {
 
 </body>
 </html>
+
 
 
 
