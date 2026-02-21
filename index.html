@@ -55,14 +55,54 @@ html, body {
 }
 
 /* TIME */
+/* Overall time box */
 .time-box {
   width: 45%;
   height: 16vh;
-  background-image: url('assets/IMGNYA.png');
-  background-size: 100% auto;
-  background-position: top center;
-  background-repeat: no-repeat;
+  background-image: url('assets/IMGNYA.png'); /* optional pastel bg */
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   overflow: hidden;
+  border-radius: 15px; /* soft rounded corners for Miku vibe */
+}
+
+/* Time display */
+#timeDisplay {
+  text-align: center;
+  font-family: 'Orbitron', sans-serif; /* futuristic / anime-style */
+  color: #1ac6e8; /* teal/cyan signature Miku color */
+  text-shadow: 0 0 8px #1ac6e8, 0 0 15px #ff9ce6; /* neon glow with pink accent */
+}
+
+/* HH:MM:SS styling */
+#hhmmss {
+  font-size: 3rem;
+  font-weight: 500;
+  display: block;
+  letter-spacing: 0.1em;
+  transition: 0.3s color;
+}
+
+/* AM/PM styling */
+#ampm {
+  font-size: 1.5rem;
+  color: #ff9ce6; /* soft pink accent */
+  opacity: 0.7;
+  display: block;
+  margin-top: 0.2em;
+}
+
+@keyframes pulse {
+  0% { text-shadow: 0 0 8px #1ac6e8, 0 0 15px #ff9ce6; }
+  50% { text-shadow: 0 0 12px #1ac6e8, 0 0 20px #ff9ce6; }
+  100% { text-shadow: 0 0 8px #1ac6e8, 0 0 15px #ff9ce6; }
+}
+
+#hhmmss {
+  animation: pulse 2s infinite;
 }
 
 /* Battery column */
@@ -149,8 +189,10 @@ html, body {
   <!-- TIME + Battery -->
   <div class="row">
     <div class="box time-box">
-      <h3>TIME</h3>
-      <div id="timeDisplay">--:--:--</div>
+      <div id="timeDisplay">
+        <span id="hhmmss">--:--:--</span>
+        <span id="ampm">AM</span>
+      </div>
     </div>
 
       <div class="battery-column">
@@ -242,8 +284,8 @@ function updateTime(timestamp) {
   hours = hours % 12;
   hours = hours ? hours : 12;
 
-  document.getElementById("timeDisplay").textContent =
-    `${hours}:${minutes}:${seconds} ${ampm}`;
+  document.getElementById("hhmmss").textContent = `${hours}:${minutes}:${seconds}`;
+  document.getElementById("ampm").textContent = ampm;
 }
 
 // ------------------------
@@ -297,6 +339,7 @@ if ('serviceWorker' in navigator) {
 
 </body>
 </html>
+
 
 
 
